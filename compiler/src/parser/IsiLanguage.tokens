@@ -1,0 +1,25 @@
+T__0=1
+T__1=2
+T__2=3
+NUMBER=4
+TEXT=5
+ATTR=6
+SUM=7
+SUB=8
+OPREL=9
+ID=10
+VIRG=11
+PF=12
+AP=13
+FP=14
+BLANK=15
+'programa'=1
+'fimprog.'=2
+'ola mundo'=3
+':='=6
+'+'=7
+'-'=8
+','=11
+'.'=12
+'('=13
+')'=14
