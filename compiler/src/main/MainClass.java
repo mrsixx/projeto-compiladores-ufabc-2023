@@ -14,7 +14,7 @@ public class MainClass {
 			CommonTokenStream tokenStream = new CommonTokenStream(lexer);
 			IsiLanguageParser parser = new IsiLanguageParser(tokenStream);
 			System.out.println("Starting Expression Analysis");
-			parser.programa();
+			parser.prog();
 			System.out.println("Compilation Successful! Good Job");
 			System.out.println("-----------------------------");			
 		}
