@@ -1,5 +1,11 @@
 // Generated from IsiLanguage.g4 by ANTLR 4.13.0
 package parser;
+
+	import ast.*;
+	import symbols.*;
+	import java.util.Arrays;
+	import java.util.List;
+
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -18,6 +24,16 @@ public interface IsiLanguageListener extends ParseTreeListener {
 	 */
 	void exitProg(IsiLanguageParser.ProgContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link IsiLanguageParser#declaracoes}.
+	 * @param ctx the parse tree
+	 */
+	void enterDeclaracoes(IsiLanguageParser.DeclaracoesContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link IsiLanguageParser#declaracoes}.
+	 * @param ctx the parse tree
+	 */
+	void exitDeclaracoes(IsiLanguageParser.DeclaracoesContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link IsiLanguageParser#declara}.
 	 * @param ctx the parse tree
 	 */
@@ -27,6 +43,16 @@ public interface IsiLanguageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitDeclara(IsiLanguageParser.DeclaraContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link IsiLanguageParser#type}.
+	 * @param ctx the parse tree
+	 */
+	void enterType(IsiLanguageParser.TypeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link IsiLanguageParser#type}.
+	 * @param ctx the parse tree
+	 */
+	void exitType(IsiLanguageParser.TypeContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link IsiLanguageParser#bloco}.
 	 * @param ctx the parse tree
@@ -108,6 +134,66 @@ public interface IsiLanguageListener extends ParseTreeListener {
 	 */
 	void exitCmdIf(IsiLanguageParser.CmdIfContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link IsiLanguageParser#cmdLoop}.
+	 * @param ctx the parse tree
+	 */
+	void enterCmdLoop(IsiLanguageParser.CmdLoopContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link IsiLanguageParser#cmdLoop}.
+	 * @param ctx the parse tree
+	 */
+	void exitCmdLoop(IsiLanguageParser.CmdLoopContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link IsiLanguageParser#paratodo}.
+	 * @param ctx the parse tree
+	 */
+	void enterParatodo(IsiLanguageParser.ParatodoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link IsiLanguageParser#paratodo}.
+	 * @param ctx the parse tree
+	 */
+	void exitParatodo(IsiLanguageParser.ParatodoContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link IsiLanguageParser#enquanto}.
+	 * @param ctx the parse tree
+	 */
+	void enterEnquanto(IsiLanguageParser.EnquantoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link IsiLanguageParser#enquanto}.
+	 * @param ctx the parse tree
+	 */
+	void exitEnquanto(IsiLanguageParser.EnquantoContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link IsiLanguageParser#limInf}.
+	 * @param ctx the parse tree
+	 */
+	void enterLimInf(IsiLanguageParser.LimInfContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link IsiLanguageParser#limInf}.
+	 * @param ctx the parse tree
+	 */
+	void exitLimInf(IsiLanguageParser.LimInfContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link IsiLanguageParser#limSup}.
+	 * @param ctx the parse tree
+	 */
+	void enterLimSup(IsiLanguageParser.LimSupContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link IsiLanguageParser#limSup}.
+	 * @param ctx the parse tree
+	 */
+	void exitLimSup(IsiLanguageParser.LimSupContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link IsiLanguageParser#passo}.
+	 * @param ctx the parse tree
+	 */
+	void enterPasso(IsiLanguageParser.PassoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link IsiLanguageParser#passo}.
+	 * @param ctx the parse tree
+	 */
+	void exitPasso(IsiLanguageParser.PassoContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link IsiLanguageParser#exprRel}.
 	 * @param ctx the parse tree
 	 */
@@ -137,4 +223,14 @@ public interface IsiLanguageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitTermo(IsiLanguageParser.TermoContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link IsiLanguageParser#num}.
+	 * @param ctx the parse tree
+	 */
+	void enterNum(IsiLanguageParser.NumContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link IsiLanguageParser#num}.
+	 * @param ctx the parse tree
+	 */
+	void exitNum(IsiLanguageParser.NumContext ctx);
 }

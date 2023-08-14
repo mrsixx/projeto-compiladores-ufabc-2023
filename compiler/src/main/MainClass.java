@@ -15,6 +15,8 @@ public class MainClass {
 			IsiLanguageParser parser = new IsiLanguageParser(tokenStream);
 			System.out.println("Starting Expression Analysis");
 			parser.prog();
+			parser.showIdentifiers();
+			parser.showCommands();
 			System.out.println("Compilation Successful! Good Job");
 			System.out.println("-----------------------------");			
 		}

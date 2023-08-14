@@ -1,5 +1,8 @@
 programa
-	declare a,b,c,d.
+	declare a,b,c,d  como INTEIRO.
+	declare dec  	 como DECIMAL.
+	declare resposta como TEXTO.
+	
 	escreva("Programa Teste").
 	escreva("Digite A").
 	leia (a).
@@ -14,6 +17,29 @@ programa
 	escreva("C e igual a ").
 	escreva (c).
 	d := c * a + b.
-	escreva ("D e igual a ").
+	resposta := "D e igual a ".
+	escreva (resposta).
 	escreva (d).
+	
+	paratodo i em [0..10;1) {
+		escreva(i).
+	}
+	
+	paratodo j em [0..10;2] {
+		escreva(j).
+	}
+	
+	paratodo k em [10..0;-1] {
+		escreva(k).
+	}
+	
+	d := 0.
+	enquanto (d < 10) {
+		d := d + 1.
+		escreva(resposta).
+		escreva(d).
+	}
+	
+	escreva(3.14).
+	
 fimprog.
