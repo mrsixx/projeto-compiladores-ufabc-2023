@@ -28,6 +28,13 @@ grammar IsiLanguage;
 	private String lastToken() {
 		return ((TokenStream)_input).LT(-1).getText();
 	}
+	private Identifier getIdIfDeclared() { 
+			String id = lastToken();
+			if (!symbolTable.exists(id)){
+				throw new RuntimeException("Semantic ERROR - Undeclared Identifier: " + id);
+			}
+			return symbolTable.get(id);
+	 }
 }
 
 prog  	: 'programa' declaracoes bloco 'fimprog' EOL {
@@ -51,9 +58,31 @@ cmd			: cmdLine | cmdIf | cmdLoop;
 
 cmdLine : (cmdLeitura | cmdEscrita | cmdExpr)EOL;
 
-cmdLeitura	: 'leia' AP ID FP;
+cmdLeitura	: 'leia' AP
+										ID {
+											Identifier id = getIdIfDeclared();
+											// id.setAssigned(true);
+											program.putCommandOnStack(new ReadCommand(id));
+										}
+										FP;
 
-cmdEscrita	: 'escreva' AP (num | TEXTO | ID) FP;
+cmdEscrita	: 'escreva' AP (
+								  INT {
+										Integer literal = Integer.valueOf(lastToken());
+										program.putCommandOnStack(new WriteCommand(new LiteralExpression<Integer>(literal)));
+									}
+								| DECIMAL {
+										Float literal = Float.valueOf(lastToken());
+										program.putCommandOnStack(new WriteCommand(new LiteralExpression<Float>(literal)));
+									}
+								| TEXTO {
+										String literal = lastToken();
+										program.putCommandOnStack(new WriteCommand(new LiteralExpression<String>(literal)));
+									}
+								| ID {
+									program.putCommandOnStack(new WriteCommand(new IdentifierExpression(getIdIfDeclared())));
+									}
+							) FP;
 
 cmdExpr			: ID {String idAtribuido = lastToken();}
 							ATTR
@@ -90,13 +119,7 @@ exprl				: OP {
 								expression = binaryExpression;
 							};
 
-termo				: ID {
-								String id = lastToken();
-								if (!symbolTable.exists(id)){
-									throw new RuntimeException("Semantic ERROR - Undeclared Identifier: " + id);
-								}
-								expression = new IdentifierExpression(symbolTable.get(id));
-							}
+termo				: ID { expression = new IdentifierExpression(getIdIfDeclared()); }
 						| INT { expression = new LiteralExpression<Integer>(Integer.valueOf(lastToken())); }
 						| DECIMAL { expression = new LiteralExpression<Float>(Float.valueOf(lastToken())); }
 						| TEXTO  { expression = new LiteralExpression<String>(lastToken()); }

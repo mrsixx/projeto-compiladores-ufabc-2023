@@ -118,6 +118,13 @@ public class IsiLanguageLexer extends Lexer {
 		private String lastToken() {
 			return ((TokenStream)_input).LT(-1).getText();
 		}
+		private Identifier getIdIfDeclared() { 
+				String id = lastToken();
+				if (!symbolTable.exists(id)){
+					throw new RuntimeException("Semantic ERROR - Undeclared Identifier: " + id);
+				}
+				return symbolTable.get(id);
+		 }
 
 
 	public IsiLanguageLexer(CharStream input) {
