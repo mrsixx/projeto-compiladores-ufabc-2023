@@ -102,6 +102,7 @@ public class IsiLanguageLexer extends Lexer {
 		private List<String> ids;
 		private Program  program = new Program();
 		private Expression expression;
+		private BinaryExpression binaryExpression;
 		private SymbolTable symbolTable = new SymbolTable();
 
 		public void setup() {

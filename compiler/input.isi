@@ -39,7 +39,7 @@ programa
 		escreva(resposta).
 		escreva(d).
 	}
-	
+	dec := 3.14.
 	escreva(3.14).
 	
 fimprog.

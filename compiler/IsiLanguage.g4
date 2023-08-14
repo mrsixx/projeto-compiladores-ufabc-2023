@@ -11,6 +11,7 @@ grammar IsiLanguage;
 	private List<String> ids;
 	private Program  program = new Program();
 	private Expression expression;
+	private BinaryExpression binaryExpression;
 	private SymbolTable symbolTable = new SymbolTable();
 
 	public void setup() {
@@ -78,10 +79,25 @@ passo				: (ID|num);
 
 exprRel			: expr OPREL expr;
 
-expr				: termo (OP termo)*;
+expr				: termo exprl*;
 
-termo				: ID 
-						| INT { expression = new LiteralExpression<Integer>(Integer.getInteger(lastToken())); }
+exprl				: OP { 
+								binaryExpression = new BinaryExpression(lastToken().charAt(0));
+								binaryExpression.setLeftOperand(expression);
+								}
+							termo {
+								binaryExpression.setRightOperand(expression);
+								expression = binaryExpression;
+							};
+
+termo				: ID {
+								String id = lastToken();
+								if (!symbolTable.exists(id)){
+									throw new RuntimeException("Semantic ERROR - Undeclared Identifier: " + id);
+								}
+								expression = new IdentifierExpression(symbolTable.get(id));
+							}
+						| INT { expression = new LiteralExpression<Integer>(Integer.valueOf(lastToken())); }
 						| DECIMAL { expression = new LiteralExpression<Float>(Float.valueOf(lastToken())); }
 						| TEXTO  { expression = new LiteralExpression<String>(lastToken()); }
 						| AP expr FP;
