@@ -21,15 +21,15 @@ programa
 	escreva (resposta).
 	escreva (d).
 	
-	paratodo i em [0..10;1) {
+	paratodo i INTEIRO em [0..10;1) {
 		escreva(i).
 	}
 	
-	paratodo j em [0..10;2] {
+	paratodo j INTEIRO em [0..10;2] {
 		escreva(j).
 	}
 	
-	paratodo k em [10..0;-1] {
+	paratodo k INTEIRO em [10..0;-1] {
 		escreva(k).
 	}
 	

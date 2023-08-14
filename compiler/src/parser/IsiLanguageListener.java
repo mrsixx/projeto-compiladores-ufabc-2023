@@ -164,36 +164,6 @@ public interface IsiLanguageListener extends ParseTreeListener {
 	 */
 	void exitEnquanto(IsiLanguageParser.EnquantoContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link IsiLanguageParser#limInf}.
-	 * @param ctx the parse tree
-	 */
-	void enterLimInf(IsiLanguageParser.LimInfContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link IsiLanguageParser#limInf}.
-	 * @param ctx the parse tree
-	 */
-	void exitLimInf(IsiLanguageParser.LimInfContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link IsiLanguageParser#limSup}.
-	 * @param ctx the parse tree
-	 */
-	void enterLimSup(IsiLanguageParser.LimSupContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link IsiLanguageParser#limSup}.
-	 * @param ctx the parse tree
-	 */
-	void exitLimSup(IsiLanguageParser.LimSupContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link IsiLanguageParser#passo}.
-	 * @param ctx the parse tree
-	 */
-	void enterPasso(IsiLanguageParser.PassoContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link IsiLanguageParser#passo}.
-	 * @param ctx the parse tree
-	 */
-	void exitPasso(IsiLanguageParser.PassoContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link IsiLanguageParser#exprRel}.
 	 * @param ctx the parse tree
 	 */

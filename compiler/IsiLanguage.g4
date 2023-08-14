@@ -52,7 +52,9 @@ type		: 'INTEIRO' {ids.forEach((id)-> symbolTable.add(new Identifier(id, DataTyp
 
 bloco		: cmd+;
 
-escopo	: AC bloco FC;
+escopo	: AC
+					bloco
+					FC;
 
 cmd			: cmdLine | cmdIf | cmdLoop;
 
@@ -94,17 +96,48 @@ cmdExpr			: ID {String idAtribuido = lastToken();}
 
 cmdIf				: 'se' AP exprRel FP 'entao' escopo ('senao' escopo)?;
 
-cmdLoop			: (paratodo | enquanto) escopo;
+cmdLoop			: paratodo | enquanto;
 
-paratodo		: 'paratodo' ID 'em' ACO limInf'..'limSup';' passo (FP|FCO);
+paratodo		: 'paratodo' {
+									// adiciona nova camada na pilha e cria o comando de loop
+									program.newLayer();
+									ForLoopCommand loopCommand = new ForLoopCommand();
+								}
+								// nome e tipo da variavel iteradora
+								ID { loopCommand.getIteratorId().setName(lastToken()); }
+								(
+									'INTEIRO'  { loopCommand.getIteratorId().setType(DataType.INTEIRO); }
+								|	'DECIMAL'  { loopCommand.getIteratorId().setType(DataType.DECIMAL); }
+								)
+								'em'
+								ACO
+									// limitante Inferior do intervalo de iteração
+									(ID { loopCommand.setLowerBound(new IdentifierExpression(getIdIfDeclared())); }
+									|INT { loopCommand.setLowerBound(new LiteralExpression<Integer>(Integer.valueOf(lastToken()))); }
+									| DECIMAL { loopCommand.setLowerBound(new LiteralExpression<Float>(Float.valueOf(lastToken()))); }
+									)
+								'..'
+									// limitante superior do intervalo de iteração
+									(ID { loopCommand.setUpperBound(new IdentifierExpression(getIdIfDeclared())); }
+									|INT { loopCommand.setUpperBound(new LiteralExpression<Integer>(Integer.valueOf(lastToken()))); }
+									| DECIMAL { loopCommand.setUpperBound(new LiteralExpression<Float>(Float.valueOf(lastToken()))); }
+									)
+								';'
+								// passo da iteração
+								(ID { loopCommand.setStep(new IdentifierExpression(getIdIfDeclared())); }
+								|INT { loopCommand.setStep(new LiteralExpression<Integer>(Integer.valueOf(lastToken()))); }
+								| DECIMAL { loopCommand.setStep(new LiteralExpression<Float>(Float.valueOf(lastToken()))); }
+								)
+								// parenteses representa intervalo aberto (i < limSup), colchete representa intervalo fechado (i <= limSup)
+								(FP   { loopCommand.setOpenInterval(true); }
+								|FCO  { loopCommand.setOpenInterval(false); }
+								)
+								escopo {
+									loopCommand.setScope(program.popStackCommands());
+									program.putCommandOnStack(loopCommand);
+								};
 
-enquanto		: 'enquanto' AP exprRel FP;
-
-limInf			: (ID|num);
-
-limSup			: (ID|num);
-
-passo				: (ID|num);
+enquanto		: 'enquanto' AP exprRel FP escopo;
 
 exprRel			: expr OPREL expr;
 

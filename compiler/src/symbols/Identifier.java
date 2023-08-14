@@ -5,7 +5,9 @@ import java.util.HashMap;
 public class Identifier {
 	private DataType	type;
 	private String		name;
-	 
+	
+	public Identifier() { }
+	
 	public Identifier(String name, DataType type) {
 		this.name = name;
 		this.type = type;
