@@ -1,8 +1,8 @@
 <template>
-  <Codemirror
+  <VueCodemirror
+    border
     v-model:value="code"
     :options="cmOptions"
-    border
     placeholder="test placeholder"
     :height="window.innerHeight - 32"
     @change="change"
@@ -10,13 +10,12 @@
 </template>
 
 <script>
-import Codemirror from "codemirror-editor-vue3";
+import {VueCodemirror} from "codemirror-editor-vue3";
 
 // placeholder
 import "codemirror/addon/display/placeholder.js";
-
 // language
-import "codemirror/mode/javascript/javascript.js";
+import '../static/isilanguage.js';
 // placeholder
 import "codemirror/addon/display/placeholder.js";
 // theme
@@ -25,20 +24,17 @@ import "codemirror/theme/dracula.css";
 import { ref } from "vue";
 export default {
   name: 'FileEditor',
-  components: { Codemirror },
+  components: { VueCodemirror },
   setup() {
-    const code = ref(`
-var i = 0;
-for (; i < 9; i++) {
-  console.log(i);
-  // more statements
-}`);
+    const code = ref(`programa\n\tdeclare greeting como TEXTO.\n\tgreeting := "Olá Mundo".\n\tescreva(greeting).\nfimprog.`);
 
     return {
       code,
       cmOptions: {
-        mode: "text/javascript", // Language mode
+        mode: "isilanguage", // Language mode
         theme: "dracula", // Theme
+        indentUnit: 4,
+        placeholder: "Digite algum código da IsiLanguage aqui..."
       },
     };
   },
