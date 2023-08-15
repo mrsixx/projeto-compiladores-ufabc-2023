@@ -107,6 +107,11 @@ public class IsiLanguageLexer extends Lexer {
 		public void setup() {
 			program.setSymbols(symbolTable);
 		}
+
+		public Program getAST() { 
+			return this.program;
+		} 
+
 		public void showIdentifiers() {
 			symbolTable.getSymbols().values().stream().forEach((id)->System.out.println(id));
 		}

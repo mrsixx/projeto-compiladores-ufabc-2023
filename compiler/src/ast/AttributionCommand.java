@@ -30,13 +30,13 @@ public class AttributionCommand extends Command {
 	@Override
 	public String cCompile() {
 		// TODO Auto-generated method stub
-		return null;
+		return "";
 	}
 
 	@Override
 	public String javaCompile() {
 		// TODO Auto-generated method stub
-		return null;
+		return "";
 	}
 
 	@Override

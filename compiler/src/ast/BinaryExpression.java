@@ -37,4 +37,16 @@ public class BinaryExpression extends Expression {
 	public String toString() {
 		return "BinaryExpression ["+ leftOperand + operator + rightOperand + "]";
 	}
+
+	@Override
+	public String cCompile() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String javaCompile() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
