@@ -13,6 +13,14 @@ grammar IsiLanguage;
 	private Expression expression;
 	private BinaryExpression binaryExpression;
 	private SymbolTable symbolTable = new SymbolTable();
+	private ArrayList<Command> curThread;
+	private ArrayList<Command> listaTrue;
+	private ArrayList<Command> listaFalse;
+	private ArrayList<AbstractCommand> listaEnquanto;
+	private ArrayList<Integer> _tipoVar = new ArrayList<Integer>();
+	private Stack<ArrayList<Command>> stack = new Stack<ArrayList<Command>>();
+	private String _exprContent;
+	private String _exprDecision;
 
 	public void setup() {
 		program.setSymbols(symbolTable);
@@ -41,6 +49,10 @@ grammar IsiLanguage;
 			return symbolTable.get(id);
 	 }
 }
+	public void verificaID(String id){
+		if (!symbolTable.exists(id))
+			throw new IsiSemanticException("Symbol "+id+" not declared");
+	}
 
 prog  	: 'programa' declaracoes bloco 'fimprog' EOL {
 	program.cleanStack();
@@ -99,7 +111,47 @@ cmdExpr			: ID {String idAtribuido = lastToken();}
 								expression = null;		
 							};
 
-cmdIf				: 'se' AP exprRel FP 'entao' escopo ('senao' escopo)?;
+cmdIf				:  'se' AP
+                    ID    		  {
+									verificaID(lastToken());
+									verificaAttrib(lastToken());
+									_exprDecision = lastToken();
+									_tipoVar.add(symbolTable.getTypeBy(lastToken()));
+						  		  }
+                    OPREL 		  { _exprDecision += lastToken(); }
+                    (ID | NUMBER) {
+									verificaAttrib(lastToken());
+									if (lastToken().matches("\\d+(\\.\\d+)?"))
+										_tipoVar.add(IsiVariable.NUMBER);
+									else {
+										verificaID(lastToken());
+										_tipoVar.add(symbolTable.getTypeBy(lastToken()));
+									}
+									_exprDecision += lastToken();
+								  }
+                    FP 			  { verificaCompatibilidade(_tipoVar); }
+                    'entao' ACH	  {
+                    
+                    				program.newLayer();
+                    			  }
+                    (cmd)+
+
+                    FCH			  { listaTrue = stack.pop(); }
+                    (
+					'senao'
+                   	ACH
+								  {
+									program.newLayer();
+								  }
+                   	(cmd+)
+                   	FCH
+								  {
+									listaFalse = stack.pop();
+									CommandDecisao cmd = new CommandDecisao(_exprDecision, listaTrue, listaFalse);
+									program.putCommandOnStack(cmd);
+								  }
+                    )?
+            ;
 
 cmdLoop			: paratodo | enquanto;
 
@@ -142,7 +194,42 @@ paratodo		: 'paratodo' {
 									program.putCommandOnStack(loopCommand);
 								};
 
-enquanto		: 'enquanto' AP exprRel FP escopo;
+enquanto		: 			  'enquanto'
+						  AP
+
+						  ID		    {
+									 	  verificaID(lastToken());
+										  verificaAttrib(lastToken());
+										  _exprDecision = lastToken();
+										  _tipoVar.add(symbolTable.getTypeBy(lastToken()));
+										}
+						  OPREL 		{ _exprDecision += lastToken(); }
+						  (ID | NUMBER)
+						 				{
+											verificaAttrib(lastToken());
+											if (lastToken().matches("\\d+(\\.\\d+)?"))
+												_tipoVar.add(IsiVariable.NUMBER);
+											else {
+												verificaID(lastToken());
+												_tipoVar.add(symbolTable.getTypeBy(lastToken()));
+											}
+											_exprDecision += lastToken();
+										}
+						  FP 			{ verificaCompatibilidade(_tipoVar); }
+						  'faca'
+                          ACH
+                           				{
+                           				  program.newLayer();
+                           				}
+                          (cmd)+
+
+                          FCH
+                          				{
+                            			  listaEnquanto = stack.pop();
+                            			  WhileLoopCommand cmd = new WhileLoopCommand(_exprDecision, listaEnquanto);
+                            			  program.putCommandOnStack(cmd);
+                           				}
+			 ;
 
 exprRel			: expr OPREL expr;
 
