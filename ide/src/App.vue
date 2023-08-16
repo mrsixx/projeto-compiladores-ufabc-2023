@@ -18,9 +18,10 @@
       :breakpoint="500"
     >
       <q-scroll-area class="fit">
-        <div class="q-pa-sm">
-          <div v-for="n in 50" :key="n">File {{ n }} / 50</div>
-        </div>
+        <!-- <div class="q-pa-sm">
+          <DirectoryTree />
+        </div> -->
+        <DirectoryTree :diretorios = "folders"/>
       </q-scroll-area>
     </q-drawer>
 
@@ -47,7 +48,7 @@
           </q-toolbar>
         </q-page-sticky> -->
       </q-page>
-
+      
       <q-page-scroller position="bottom">
         <q-btn fab icon="keyboard_arrow_up" color="red" />
       </q-page-scroller>
@@ -60,6 +61,8 @@ import { ref } from 'vue';
 // import HelloWorld from './components/HelloWorld.vue';
 import Toolbar from './components/ToolBar.vue';
 import FileEditor from './components/FileEditor.vue';
+import DirectoryTree from './components/DirectoryTree.vue';
+import folders from './static/folders';
 
 export default {
   name: 'LayoutDefault',
@@ -68,6 +71,12 @@ export default {
     Toolbar,
     // HelloWorld,
     FileEditor,
+    DirectoryTree,
+  },
+  data () {
+    return {
+      folders
+    };
   },
   setup () {
     return {
