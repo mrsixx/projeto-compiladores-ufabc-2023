@@ -13,7 +13,7 @@
     "codemirror-editor-vue3": "^2.3.0",
     "core-js": "^3.8.3",
     "quasar": "^2.0.0",
-    "vue": "^3.2.13"
+    "vue": "^3.2.26"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
