@@ -3,7 +3,9 @@ package parser;
 
 	import ast.*;
 	import symbols.*;
+	import exceptions.*;
 	import java.util.Arrays;
+	import java.util.ArrayList;
 	import java.util.List;
 
 

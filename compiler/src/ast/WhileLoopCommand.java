@@ -1,12 +1,12 @@
 package ast;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class WhileLoopCommand extends Command {
 	private String condition;
-	private ArrayList<Command> lista;
+	private List<Command> lista;
 	
-	public WhileLoopCommand(String condition, ArrayList<Command> comandos) {
+	public WhileLoopCommand(String condition, List<Command> comandos) {
 		this.condition = condition;
 		this.lista = comandos;
 	}

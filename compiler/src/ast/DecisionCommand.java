@@ -1,14 +1,13 @@
 package ast;
-
-import java.util.ArrayList;
+import java.util.List;
 
 public class DecisionCommand extends Command {
 
 	private String condition;
-	private ArrayList<Command> listaTrue;
-	private ArrayList<Command> listaFalse;
+	private List<Command> listaTrue;
+	private List<Command> listaFalse;
 
-	public DecisionCommand(String condition, ArrayList<Command> lt, ArrayList<Command> lf) {
+	public DecisionCommand(String condition, List<Command> lt, List<Command> lf) {
 		this.condition = condition;
 		this.listaTrue = lt;
 		this.listaFalse = lf;

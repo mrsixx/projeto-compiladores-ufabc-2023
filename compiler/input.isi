@@ -34,7 +34,7 @@ programa
 	}
 	
 	d := 0.
-	enquanto (d < 10) {
+	enquanto (d < 10) faca {
 		d := d + 1.
 		escreva(resposta).
 		escreva(d).

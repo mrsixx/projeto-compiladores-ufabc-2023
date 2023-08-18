@@ -3,7 +3,9 @@ grammar IsiLanguage;
 @header{
 	import ast.*;
 	import symbols.*;
+	import exceptions.*;
 	import java.util.Arrays;
+	import java.util.ArrayList;
 	import java.util.List;
 }
 
@@ -13,12 +15,11 @@ grammar IsiLanguage;
 	private Expression expression;
 	private BinaryExpression binaryExpression;
 	private SymbolTable symbolTable = new SymbolTable();
-	private ArrayList<Command> curThread;
-	private ArrayList<Command> listaTrue;
-	private ArrayList<Command> listaFalse;
-	private ArrayList<AbstractCommand> listaEnquanto;
-	private ArrayList<Integer> _tipoVar = new ArrayList<Integer>();
-	private Stack<ArrayList<Command>> stack = new Stack<ArrayList<Command>>();
+	private List<Command> curThread;
+	private List<Command> listaTrue;
+	private List<Command> listaFalse;
+	private List<Command> listaEnquanto;
+	private List<Integer> _tipoVar = new ArrayList<Integer>();
 	private String _exprContent;
 	private String _exprDecision;
 
@@ -41,19 +42,20 @@ grammar IsiLanguage;
 	private String lastToken() {
 		return ((TokenStream)_input).LT(-1).getText();
 	}
+
 	private Identifier getIdIfDeclared() { 
 			String id = lastToken();
 			if (!symbolTable.exists(id)){
-				throw new RuntimeException("Semantic ERROR - Undeclared Identifier: " + id);
+				throw new IsiSemanticException("Semantic ERROR - Undeclared Identifier: " + id);
 			}
 			return symbolTable.get(id);
-	 }
-}
-	public void verificaID(String id){
+  }
+
+  public void verificaID(String id){
 		if (!symbolTable.exists(id))
 			throw new IsiSemanticException("Symbol "+id+" not declared");
 	}
-
+}
 prog  	: 'programa' declaracoes bloco 'fimprog' EOL {
 	program.cleanStack();
 };
@@ -112,45 +114,39 @@ cmdExpr			: ID {String idAtribuido = lastToken();}
 							};
 
 cmdIf				:  'se' AP
-                    ID    		  {
-									verificaID(lastToken());
-									verificaAttrib(lastToken());
-									_exprDecision = lastToken();
-									_tipoVar.add(symbolTable.getTypeBy(lastToken()));
+                    ID {
+											var id = getIdIfDeclared();
+											//verificaAttrib(id);
+											//_exprDecision = id;
+											//_tipoVar.add(symbolTable.getTypeBy(id));
 						  		  }
-                    OPREL 		  { _exprDecision += lastToken(); }
-                    (ID | NUMBER) {
-									verificaAttrib(lastToken());
-									if (lastToken().matches("\\d+(\\.\\d+)?"))
-										_tipoVar.add(IsiVariable.NUMBER);
-									else {
-										verificaID(lastToken());
-										_tipoVar.add(symbolTable.getTypeBy(lastToken()));
-									}
-									_exprDecision += lastToken();
-								  }
-                    FP 			  { verificaCompatibilidade(_tipoVar); }
-                    'entao' ACH	  {
-                    
-                    				program.newLayer();
-                    			  }
+                    OPREL //{ _exprDecision += lastToken(); }
+                    (ID | INT)
+										//{
+									/*verificaAttrib(lastToken());
+										/*if (lastToken().matches("\\d+(\\.\\d+)?"))
+											_tipoVar.add(DataType.INTEIRO);
+										else {
+											verificaID(lastToken());
+											//_tipoVar.add(symbolTable.getTypeBy(lastToken()));
+										}
+										_exprDecision += lastToken();
+								  }*/
+                    FP 
+										//{ verificaCompatibilidade(_tipoVar); }
+									'entao' AC { program.newLayer(); }
                     (cmd)+
-
-                    FCH			  { listaTrue = stack.pop(); }
+                    FC { listaTrue = program.popStackCommands(); }
                     (
-					'senao'
-                   	ACH
-								  {
-									program.newLayer();
-								  }
+									'senao'
+                   	AC { program.newLayer(); }
                    	(cmd+)
-                   	FCH
-								  {
-									listaFalse = stack.pop();
-									CommandDecisao cmd = new CommandDecisao(_exprDecision, listaTrue, listaFalse);
-									program.putCommandOnStack(cmd);
-								  }
-                    )?
+                   	FC
+										{
+											listaFalse = program.popStackCommands();
+											DecisionCommand cmd = new DecisionCommand(_exprDecision, listaTrue, listaFalse);
+											program.putCommandOnStack(cmd);
+										})?
             ;
 
 cmdLoop			: paratodo | enquanto;
@@ -196,39 +192,39 @@ paratodo		: 'paratodo' {
 
 enquanto		: 			  'enquanto'
 						  AP
-
-						  ID		    {
-									 	  verificaID(lastToken());
-										  verificaAttrib(lastToken());
-										  _exprDecision = lastToken();
-										  _tipoVar.add(symbolTable.getTypeBy(lastToken()));
+						  exprRel		    {
+									 	  //verificaID(lastToken());
+										  //verificaAttrib(lastToken());
+										  //_exprDecision = lastToken();
+										  //_tipoVar.add(symbolTable.getTypeBy(lastToken()));
 										}
-						  OPREL 		{ _exprDecision += lastToken(); }
-						  (ID | NUMBER)
-						 				{
-											verificaAttrib(lastToken());
-											if (lastToken().matches("\\d+(\\.\\d+)?"))
-												_tipoVar.add(IsiVariable.NUMBER);
-											else {
-												verificaID(lastToken());
-												_tipoVar.add(symbolTable.getTypeBy(lastToken()));
-											}
-											_exprDecision += lastToken();
-										}
-						  FP 			{ verificaCompatibilidade(_tipoVar); }
+						  //OPREL
+							//{ _exprDecision += lastToken(); }
+						  //(ID | INT)
+						 				//{
+											//verificaAttrib(lastToken());
+											//if (lastToken().matches("\\d+(\\.\\d+)?"))
+												//_tipoVar.add(DataType.INTEIRO);
+											//else {
+												//verificaID(lastToken());
+												//_tipoVar.add(symbolTable.getTypeBy(lastToken()));
+											//}
+											//_exprDecision += lastToken();
+										//}
+						  FP 
+							//{ verificaCompatibilidade(_tipoVar); }
 						  'faca'
-                          ACH
-                           				{
-                           				  program.newLayer();
-                           				}
+                          AC
+													{
+														program.newLayer();
+													}
                           (cmd)+
-
-                          FCH
-                          				{
-                            			  listaEnquanto = stack.pop();
-                            			  WhileLoopCommand cmd = new WhileLoopCommand(_exprDecision, listaEnquanto);
-                            			  program.putCommandOnStack(cmd);
-                           				}
+                          FC
+													{
+														listaEnquanto = program.popStackCommands();
+														WhileLoopCommand cmd = new WhileLoopCommand(_exprDecision, listaEnquanto);
+														program.putCommandOnStack(cmd);
+													}
 			 ;
 
 exprRel			: expr OPREL expr;
