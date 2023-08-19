@@ -20,8 +20,8 @@ grammar IsiLanguage;
 	private List<Command> listaFalse;
 	private List<Command> listaEnquanto;
 	private List<Integer> _tipoVar = new ArrayList<Integer>();
-	private String _exprContent;
-	private String _exprDecision;
+	private RelationalExpression _relationalExpression;
+	private DeclarationCommand _declCmd;
 
 	public void setup() {
 		program.setSymbols(symbolTable);
@@ -55,6 +55,12 @@ grammar IsiLanguage;
 		if (!symbolTable.exists(id))
 			throw new IsiSemanticException("Symbol "+id+" not declared");
 	}
+	
+	public void mapIdentifier(String name, DataType type) {
+		Identifier id = new Identifier(name, type);
+		symbolTable.add(id);
+		_declCmd.getIds().add(id);
+	}
 }
 prog  	: 'programa' declaracoes bloco 'fimprog' EOL {
 	program.cleanStack();
@@ -62,12 +68,16 @@ prog  	: 'programa' declaracoes bloco 'fimprog' EOL {
 
 declaracoes : declara*;
 
-declara	: 'declare' ID { ids = new ArrayList<String>(); ids.add(lastToken());}
+declara	: 'declare' ID {
+												ids = new ArrayList<String>();
+												ids.add(lastToken());
+												_declCmd = new DeclarationCommand();
+										}
 										(COMMA ID { ids.add(lastToken());})* 'como' type EOL;
 
-type		: 'INTEIRO' {ids.forEach((id)-> symbolTable.add(new Identifier(id, DataType.INTEIRO)));}
-				| 'DECIMAL' {ids.forEach((id)-> symbolTable.add(new Identifier(id, DataType.DECIMAL)));}
-				| 'TEXTO' 	{ids.forEach((id)-> symbolTable.add(new Identifier(id, DataType.TEXTO)));};
+type		: 'INTEIRO' {ids.forEach((name)-> mapIdentifier(name, DataType.INTEIRO));program.putCommandOnStack(_declCmd);}
+				| 'DECIMAL' {ids.forEach((name)-> mapIdentifier(name, DataType.DECIMAL));program.putCommandOnStack(_declCmd);}
+				| 'TEXTO' 	{ids.forEach((name)-> mapIdentifier(name, DataType.TEXTO));program.putCommandOnStack(_declCmd);};
 
 bloco		: cmd+;
 
@@ -113,40 +123,23 @@ cmdExpr			: ID {String idAtribuido = lastToken();}
 								expression = null;		
 							};
 
-cmdIf				:  'se' AP
-                    ID {
-											var id = getIdIfDeclared();
-											//verificaAttrib(id);
-											//_exprDecision = id;
-											//_tipoVar.add(symbolTable.getTypeBy(id));
-						  		  }
-                    OPREL //{ _exprDecision += lastToken(); }
-                    (ID | INT)
-										//{
-									/*verificaAttrib(lastToken());
-										/*if (lastToken().matches("\\d+(\\.\\d+)?"))
-											_tipoVar.add(DataType.INTEIRO);
-										else {
-											verificaID(lastToken());
-											//_tipoVar.add(symbolTable.getTypeBy(lastToken()));
-										}
-										_exprDecision += lastToken();
-								  }*/
-                    FP 
-										//{ verificaCompatibilidade(_tipoVar); }
-									'entao' AC { program.newLayer(); }
-                    (cmd)+
-                    FC { listaTrue = program.popStackCommands(); }
-                    (
-									'senao'
-                   	AC { program.newLayer(); }
-                   	(cmd+)
-                   	FC
-										{
-											listaFalse = program.popStackCommands();
-											DecisionCommand cmd = new DecisionCommand(_exprDecision, listaTrue, listaFalse);
-											program.putCommandOnStack(cmd);
-										})?
+cmdIf				:  'se' { DecisionCommand cmdIf = new DecisionCommand(); }
+								AP
+								exprRel { cmdIf.setCondition(_relationalExpression); }
+								FP 
+								//{ verificaCompatibilidade(_tipoVar); }
+								'entao' AC { program.newLayer(); }
+									(cmd)+
+									FC { cmdIf.getTrueCommands().addAll(program.popStackCommands()); }
+									(
+								'senao'
+									AC { program.newLayer(); }
+									(cmd+)
+									FC
+									{
+										cmdIf.getFalseCommands().addAll(program.popStackCommands());
+										program.putCommandOnStack(cmdIf);
+									})?
             ;
 
 cmdLoop			: paratodo | enquanto;
@@ -162,7 +155,7 @@ paratodo		: 'paratodo' {
 									'INTEIRO'  { loopCommand.getIteratorId().setType(DataType.INTEIRO); }
 								|	'DECIMAL'  { loopCommand.getIteratorId().setType(DataType.DECIMAL); }
 								)
-								'em'
+								'em' { symbolTable.add(loopCommand.getIteratorId()); }
 								ACO
 									// limitante Inferior do intervalo de iteração
 									(ID { loopCommand.setLowerBound(new IdentifierExpression(getIdIfDeclared())); }
@@ -190,44 +183,25 @@ paratodo		: 'paratodo' {
 									program.putCommandOnStack(loopCommand);
 								};
 
-enquanto		: 			  'enquanto'
+enquanto		: 'enquanto' { WhileLoopCommand whileCmd = new WhileLoopCommand(); }
 						  AP
-						  exprRel		    {
-									 	  //verificaID(lastToken());
-										  //verificaAttrib(lastToken());
-										  //_exprDecision = lastToken();
-										  //_tipoVar.add(symbolTable.getTypeBy(lastToken()));
-										}
-						  //OPREL
-							//{ _exprDecision += lastToken(); }
-						  //(ID | INT)
-						 				//{
-											//verificaAttrib(lastToken());
-											//if (lastToken().matches("\\d+(\\.\\d+)?"))
-												//_tipoVar.add(DataType.INTEIRO);
-											//else {
-												//verificaID(lastToken());
-												//_tipoVar.add(symbolTable.getTypeBy(lastToken()));
-											//}
-											//_exprDecision += lastToken();
-										//}
+						  exprRel { whileCmd.setCondition(_relationalExpression); }
 						  FP 
-							//{ verificaCompatibilidade(_tipoVar); }
 						  'faca'
-                          AC
-													{
-														program.newLayer();
-													}
-                          (cmd)+
-                          FC
-													{
-														listaEnquanto = program.popStackCommands();
-														WhileLoopCommand cmd = new WhileLoopCommand(_exprDecision, listaEnquanto);
-														program.putCommandOnStack(cmd);
-													}
-			 ;
+							AC { program.newLayer(); }
+							(cmd)+
+							FC
+							{ 
+								whileCmd.getCommands().addAll(program.popStackCommands());
+								program.putCommandOnStack(whileCmd);
+							};
 
-exprRel			: expr OPREL expr;
+exprRel			: expr {
+								_relationalExpression = new RelationalExpression();
+								_relationalExpression.setLeftMember(expression);
+							}
+							OPREL { _relationalExpression.setOperator(lastToken()); }
+							expr { _relationalExpression.setRightMember(expression); };
 
 expr				: termo exprl*;
 

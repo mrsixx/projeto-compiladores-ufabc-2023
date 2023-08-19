@@ -110,8 +110,8 @@ public class IsiLanguageLexer extends Lexer {
 		private List<Command> listaFalse;
 		private List<Command> listaEnquanto;
 		private List<Integer> _tipoVar = new ArrayList<Integer>();
-		private String _exprContent;
-		private String _exprDecision;
+		private RelationalExpression _relationalExpression;
+		private DeclarationCommand _declCmd;
 
 		public void setup() {
 			program.setSymbols(symbolTable);
@@ -144,6 +144,12 @@ public class IsiLanguageLexer extends Lexer {
 	  public void verificaID(String id){
 			if (!symbolTable.exists(id))
 				throw new IsiSemanticException("Symbol "+id+" not declared");
+		}
+		
+		public void mapIdentifier(String name, DataType type) {
+			Identifier id = new Identifier(name, type);
+			symbolTable.add(id);
+			_declCmd.getIds().add(id);
 		}
 
 

@@ -19,14 +19,12 @@ public class ReadCommand extends Command {
 	
 	@Override
 	public String cCompile() {
-		// TODO Auto-generated method stub
-		return "";
+		return "scanf(\"%i\", &i);\n";
 	}
 
 	@Override
 	public String javaCompile() {
-		// TODO Auto-generated method stub
-		return "";
+		return "keyboard.nextDouble();\n";
 	}
 
 	@Override

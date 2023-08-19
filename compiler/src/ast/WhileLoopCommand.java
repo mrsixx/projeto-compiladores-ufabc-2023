@@ -1,29 +1,39 @@
 package ast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WhileLoopCommand extends Command {
-	private String condition;
-	private List<Command> lista;
+	private RelationalExpression condition;
+	private List<Command> commands;
 	
-	public WhileLoopCommand(String condition, List<Command> comandos) {
-		this.condition = condition;
-		this.lista = comandos;
+	public WhileLoopCommand() {
+		this.commands = new ArrayList<Command>();
+	}
+	
+	public RelationalExpression getCondition() {
+		return condition;
 	}
 
+	public void setCondition(RelationalExpression condition) {
+		this.condition = condition;
+	}
+
+	public List<Command> getCommands() {
+		return commands;
+	}
+	
 	@Override
 	public String cCompile() {
 		// TODO Auto-generated method stub
 		return "";
 	}
 
-
-
 	@Override
 	public String javaCompile() {
         StringBuilder str = new StringBuilder();
-		str.append("while ("+condition+") {\n");
-		for (Command cmd: lista) {
+		str.append("while ("+getCondition()+") {\n");
+		for (Command cmd: getCommands()) {
 			str.append("\t\t\t"+cmd.javaCompile());
 		}
 		str.append("\n}\n");
@@ -32,8 +42,7 @@ public class WhileLoopCommand extends Command {
     @Override
     public String toString() {
         // TODO Auto-generated method stub
-        return "CommandEnquanto [condition=" + condition + ", lista=" + lista + "]";
+        return "CommandEnquanto [condition=" + getCondition() + ", lista=" + getCommands() + "]";
     }
-
 }
 

@@ -1,5 +1,5 @@
 programa
-	declare a,b,c,d, i, j, k  como INTEIRO.
+	declare a,b,c,d  como INTEIRO.
 	declare dec  	 como DECIMAL.
 	declare resposta como TEXTO.
 	
@@ -35,6 +35,12 @@ programa
 	
 	d := 0.
 	enquanto (d < 10) faca {
+		d := d + 1.
+		escreva(resposta).
+		escreva(d).
+	}
+	
+	enquanto (d <= 100) faca {
 		d := d + 1.
 		escreva(resposta).
 		escreva(d).

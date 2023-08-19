@@ -37,7 +37,6 @@ public class CodeGenerator {
 	public String compile() {
 		var transpiler = _factory.getTranspiler(this.getTarget());
 		this.getParser().prog();
-		parser.showIdentifiers();
 		parser.showCommands();
 		return transpiler.transpile();
 	}
