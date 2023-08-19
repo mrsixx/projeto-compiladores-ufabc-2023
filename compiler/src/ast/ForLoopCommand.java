@@ -65,15 +65,63 @@ public class ForLoopCommand extends Command {
 	}
 	
 	@Override
-	public String cCompile() {
-		// TODO Auto-generated method stub
-		return "";
+	public String cCompile() throws Exception {
+		StringBuilder str = new StringBuilder();
+		// for (int i = 0; i < 10; i+= 1)
+		var iterator = getLoopIteratorDeclaration();
+        str.append("for (");
+        str.append(iterator.cCompile().replace(";\n", ""));
+        str.append(" = ");
+        str.append(this.getLowerBound().cCompile());
+        str.append(";");
+        str.append(this.getIteratorId().getName());
+        str.append(isOpenInterval ? '<' : "<=");
+        str.append(this.getUpperBound().cCompile());
+        str.append(";");
+        str.append(this.getIteratorId().getName());
+        str.append(" += ");
+        str.append(this.getStep().cCompile());
+        str.append(") {\n");
+		for (Command cmd: this.getScope()) {
+			str.append("\t\t");
+			str.append(cmd.cCompile());
+			str.append("\n");
+		}
+		str.append("\t}\n");
+        return str.toString();
 	}
 
 	@Override
-	public String javaCompile() {
-		// TODO Auto-generated method stub
-		return "";
+	public String javaCompile() throws Exception {
+		StringBuilder str = new StringBuilder();
+		// for (int i = 0; i < 10; i+= 1)
+		var iterator = getLoopIteratorDeclaration();
+        str.append("for (");
+        str.append(iterator.javaCompile().replace(";\n", ""));
+        str.append(" = ");
+        str.append(this.getLowerBound().javaCompile());
+        str.append(";");
+        str.append(this.getIteratorId().getName());
+        str.append(isOpenInterval ? '<' : "<=");
+        str.append(this.getUpperBound().javaCompile());
+        str.append(";");
+        str.append(this.getIteratorId().getName());
+        str.append(" += ");
+        str.append(this.getStep().javaCompile());
+        str.append(") {\n");
+		for (Command cmd: this.getScope()) {
+			str.append("\t\t");
+			str.append(cmd.javaCompile());
+			str.append("\n");
+		}
+		str.append("\t}\n");
+        return str.toString();
+	}
+	
+	private DeclarationCommand getLoopIteratorDeclaration() {
+		var declarationCmd = new DeclarationCommand();
+		declarationCmd.getIds().add(this.getIteratorId());
+		return declarationCmd;
 	}
 
 	@Override

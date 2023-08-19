@@ -30,7 +30,7 @@ public class DeclarationCommand extends Command {
 	}
 
 	@Override
-	public String javaCompile() {
+	public String javaCompile() throws Exception {
 		StringBuilder sb = new StringBuilder();
 		try {
 			String type = this.dataTypeToJavaType(getIds().get(0).getType());
@@ -49,10 +49,4 @@ public class DeclarationCommand extends Command {
 		iterator.forEachRemaining((id) -> sb.append(", "+id.getName()));
 		sb.append(";\n");
 	}
-
-	@Override
-	public String toString() {
-		return "DeclarationCommand [ids=" + ids + "]";
-	}
-	
 }

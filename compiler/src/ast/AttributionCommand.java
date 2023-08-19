@@ -28,20 +28,24 @@ public class AttributionCommand extends Command {
 	}
 
 	@Override
-	public String cCompile() {
-		// TODO Auto-generated method stub
-		return "";
+	public String cCompile() throws Exception {
+		StringBuilder sb = new StringBuilder();
+		sb.append(getId().getName());
+		sb.append(" = ");
+		sb.append(getExpression().cCompile());
+		sb.append(";\n");
+		return sb.toString();
 	}
 
 	@Override
-	public String javaCompile() {
-		// TODO Auto-generated method stub
-		return "";
+	public String javaCompile() throws Exception {
+		StringBuilder sb = new StringBuilder();
+		sb.append(getId().getName());
+		sb.append(" = ");
+		sb.append(getExpression().javaCompile());
+		sb.append(";\n");
+		return sb.toString();
 	}
 
-	@Override
-	public String toString() {
-		return "AttributionCommand [id=" + id.getName() + ":"+ id.getType() +", expression=" + expression + "]";
-	}
 
 }

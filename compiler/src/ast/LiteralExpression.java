@@ -20,7 +20,7 @@ public class LiteralExpression<T> extends Expression {
 	}
 	
 	public boolean isDecimal() {
-		return (value instanceof Float);
+		return (value instanceof Double);
 	}
 	
 	public boolean isText() {
@@ -33,12 +33,12 @@ public class LiteralExpression<T> extends Expression {
 	}
 
 	@Override
-	public String cCompile() {
+	public String cCompile() throws Exception {
 		return String.valueOf(getValue());
 	}
 
 	@Override
-	public String javaCompile() {
+	public String javaCompile() throws Exception {
 		return String.valueOf(getValue());
 	}
 	

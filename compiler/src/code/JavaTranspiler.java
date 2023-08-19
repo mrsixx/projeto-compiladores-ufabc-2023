@@ -16,12 +16,20 @@ public class JavaTranspiler extends Transpiler {
 		StringBuilder sb = new StringBuilder();
 		sb.append("import java.util.Scanner;\r\n");
 		sb.append("public class MainClass {\n");
-		sb.append("\tScanner keyboard = new Scanner(System.in);");
 		sb.append("public static void main(String[] args) {\n");
+		sb.append("\tScanner keyboard = new Scanner(System.in);\n");
 		this.getParser()
 			.getAST()
 			.getCommands()
-			.forEach((cmd)-> sb.append(cmd.javaCompile()));
+			.forEach((cmd)-> {
+				try {
+					sb.append("\t");
+					sb.append(cmd.javaCompile());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
 		sb.append("}\n");
 		sb.append("}\n");
 		return sb.toString();

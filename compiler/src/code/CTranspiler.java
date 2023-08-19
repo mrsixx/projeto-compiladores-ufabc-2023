@@ -18,7 +18,15 @@ public class CTranspiler extends Transpiler {
 		this.getParser()
 			.getAST()
 			.getCommands()
-			.forEach((cmd)-> sb.append(cmd.cCompile()));
+			.forEach((cmd)-> {
+				try {
+					sb.append("\t");
+					sb.append(cmd.cCompile());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
 		sb.append("return 0;\n");
 		sb.append("}\n");
 		return sb.toString();

@@ -35,7 +35,7 @@ public class WriteCommand extends Command {
 	}
 
 	@Override
-	public String javaCompile() {
+	public String javaCompile() throws Exception {
 		StringBuilder sb = new StringBuilder();
 		// caso seja o print do valor de uma variavel
 		if(expression instanceof IdentifierExpression)
@@ -49,11 +49,6 @@ public class WriteCommand extends Command {
 		var exp = ((LiteralExpression)expression);
 		sb.append("System.out.println("+exp.getValue()+");\n");
 		return sb.toString();
-	}
-
-	@Override
-	public String toString() {
-		return "WriteCommand [expression=" + getExpression() + "]";
 	}
 
 	public Expression getExpression() {

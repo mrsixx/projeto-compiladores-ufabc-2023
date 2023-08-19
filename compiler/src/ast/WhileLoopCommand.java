@@ -24,19 +24,30 @@ public class WhileLoopCommand extends Command {
 	}
 	
 	@Override
-	public String cCompile() {
-		// TODO Auto-generated method stub
-		return "";
+	public String cCompile() throws Exception {
+		StringBuilder str = new StringBuilder();
+        str.append("while (");
+        str.append(this.getCondition().cCompile());
+        str.append(") {\n");
+		for (Command cmd: getCommands()) {
+			str.append("\t\t");
+			str.append(cmd.cCompile());
+		}
+		str.append("\t}\n");
+        return str.toString();
 	}
 
 	@Override
-	public String javaCompile() {
+	public String javaCompile() throws Exception {
         StringBuilder str = new StringBuilder();
-		str.append("while ("+getCondition()+") {\n");
+        str.append("while (");
+        str.append(this.getCondition().javaCompile());
+        str.append(") {\n");
 		for (Command cmd: getCommands()) {
-			str.append("\t\t\t"+cmd.javaCompile());
+			str.append("\t\t");
+			str.append(cmd.javaCompile());
 		}
-		str.append("\n}\n");
+		str.append("\t}\n");
         return str.toString();
     }
     @Override

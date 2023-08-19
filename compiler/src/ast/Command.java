@@ -3,8 +3,8 @@ package ast;
 import symbols.DataType;
 
 public abstract class Command {
-	public abstract String cCompile();
-	public abstract String javaCompile();
+	public abstract String cCompile() throws Exception;
+	public abstract String javaCompile() throws Exception;
 	
 	public String dataTypeToCType(DataType type) throws Exception {
 		switch (type) {
@@ -18,7 +18,7 @@ public abstract class Command {
 	public String dataTypeToJavaType(DataType type) throws Exception {
 		switch (type) {
 			case INTEIRO: return "int";
-			case DECIMAL: return "float";
+			case DECIMAL: return "double";
 			case TEXTO: return "String";
 			default: throw new Exception("Tipo não mapeado.");
 		}

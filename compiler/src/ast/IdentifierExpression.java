@@ -24,14 +24,12 @@ public class IdentifierExpression extends Expression {
 
 	@Override
 	public String cCompile() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.getId().getName();
 	}
 
 	@Override
-	public String javaCompile() {
-		// TODO Auto-generated method stub
-		return null;
+	public String javaCompile() throws Exception {
+		return this.getId().getName();
 	}
 	
 }

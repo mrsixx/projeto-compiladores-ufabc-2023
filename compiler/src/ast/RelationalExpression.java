@@ -30,13 +30,27 @@ public class RelationalExpression extends Expression {
 	
 	@Override
 	public String cCompile() {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder sb = new StringBuilder();
+		try {
+			sb.append(this.getLeftMember().cCompile());
+			sb.append(this.getOperator());
+			sb.append(this.getRightMember().cCompile());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return sb.toString();
 	}
 	@Override
-	public String javaCompile() {
-		// TODO Auto-generated method stub
-		return null;
+	public String javaCompile() throws Exception {
+		StringBuilder sb = new StringBuilder();
+		try {
+			sb.append(this.getLeftMember().javaCompile());
+			sb.append(this.getOperator());
+			sb.append(this.getRightMember().javaCompile());			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return sb.toString();
 	}
 	
 	@Override

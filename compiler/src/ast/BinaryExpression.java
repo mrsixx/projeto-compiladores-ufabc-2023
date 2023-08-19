@@ -40,13 +40,27 @@ public class BinaryExpression extends Expression {
 
 	@Override
 	public String cCompile() {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder sb = new StringBuilder();
+		try {
+			sb.append(this.getLeftOperand().cCompile());
+			sb.append(this.getOperator());
+			sb.append(this.getRightOperand().cCompile());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return sb.toString();
 	}
 
 	@Override
 	public String javaCompile() {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder sb = new StringBuilder();
+		try {
+			sb.append(this.getLeftOperand().javaCompile());
+			sb.append(this.getOperator());
+			sb.append(this.getRightOperand().javaCompile());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return sb.toString();
 	}
 }

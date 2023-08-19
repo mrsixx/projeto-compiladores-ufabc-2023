@@ -48,4 +48,8 @@ programa
 	dec := 3.14.
 	escreva(3.14).
 	
+	paratodo z DECIMAL em [0..1;0.1) {
+		escreva(z).
+	}
+	
 fimprog.

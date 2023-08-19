@@ -103,8 +103,8 @@ cmdEscrita	: 'escreva' AP (
 										program.putCommandOnStack(new WriteCommand(new LiteralExpression<Integer>(literal)));
 									}
 								| DECIMAL {
-										Float literal = Float.valueOf(lastToken());
-										program.putCommandOnStack(new WriteCommand(new LiteralExpression<Float>(literal)));
+										Double literal = Double.valueOf(lastToken());
+										program.putCommandOnStack(new WriteCommand(new LiteralExpression<Double>(literal)));
 									}
 								| TEXTO {
 										String literal = lastToken();
@@ -160,19 +160,19 @@ paratodo		: 'paratodo' {
 									// limitante Inferior do intervalo de iteração
 									(ID { loopCommand.setLowerBound(new IdentifierExpression(getIdIfDeclared())); }
 									|INT { loopCommand.setLowerBound(new LiteralExpression<Integer>(Integer.valueOf(lastToken()))); }
-									| DECIMAL { loopCommand.setLowerBound(new LiteralExpression<Float>(Float.valueOf(lastToken()))); }
+									| DECIMAL { loopCommand.setLowerBound(new LiteralExpression<Double>(Double.valueOf(lastToken()))); }
 									)
 								'..'
 									// limitante superior do intervalo de iteração
 									(ID { loopCommand.setUpperBound(new IdentifierExpression(getIdIfDeclared())); }
 									|INT { loopCommand.setUpperBound(new LiteralExpression<Integer>(Integer.valueOf(lastToken()))); }
-									| DECIMAL { loopCommand.setUpperBound(new LiteralExpression<Float>(Float.valueOf(lastToken()))); }
+									| DECIMAL { loopCommand.setUpperBound(new LiteralExpression<Double>(Double.valueOf(lastToken()))); }
 									)
 								';'
 								// passo da iteração
 								(ID { loopCommand.setStep(new IdentifierExpression(getIdIfDeclared())); }
 								|INT { loopCommand.setStep(new LiteralExpression<Integer>(Integer.valueOf(lastToken()))); }
-								| DECIMAL { loopCommand.setStep(new LiteralExpression<Float>(Float.valueOf(lastToken()))); }
+								| DECIMAL { loopCommand.setStep(new LiteralExpression<Double>(Double.valueOf(lastToken()))); }
 								)
 								// parenteses representa intervalo aberto (i < limSup), colchete representa intervalo fechado (i <= limSup)
 								(FP   { loopCommand.setOpenInterval(true); }
@@ -216,7 +216,7 @@ exprl				: OP {
 
 termo				: ID { expression = new IdentifierExpression(getIdIfDeclared()); }
 						| INT { expression = new LiteralExpression<Integer>(Integer.valueOf(lastToken())); }
-						| DECIMAL { expression = new LiteralExpression<Float>(Float.valueOf(lastToken())); }
+						| DECIMAL { expression = new LiteralExpression<Double>(Double.valueOf(lastToken())); }
 						| TEXTO  { expression = new LiteralExpression<String>(lastToken()); }
 						| AP expr FP;
 

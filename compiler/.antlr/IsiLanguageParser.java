@@ -674,8 +674,8 @@ public class IsiLanguageParser extends Parser {
 				setState(107);
 				match(DECIMAL);
 
-														Float literal = Float.valueOf(lastToken());
-														program.putCommandOnStack(new WriteCommand(new LiteralExpression<Float>(literal)));
+														Double literal = Double.valueOf(lastToken());
+														program.putCommandOnStack(new WriteCommand(new LiteralExpression<Double>(literal)));
 													
 				}
 				break;
@@ -1008,7 +1008,7 @@ public class IsiLanguageParser extends Parser {
 				{
 				setState(173);
 				match(DECIMAL);
-				 loopCommand.setLowerBound(new LiteralExpression<Float>(Float.valueOf(lastToken()))); 
+				 loopCommand.setLowerBound(new LiteralExpression<Double>(Double.valueOf(lastToken()))); 
 				}
 				break;
 			default:
@@ -1037,7 +1037,7 @@ public class IsiLanguageParser extends Parser {
 				{
 				setState(182);
 				match(DECIMAL);
-				 loopCommand.setUpperBound(new LiteralExpression<Float>(Float.valueOf(lastToken()))); 
+				 loopCommand.setUpperBound(new LiteralExpression<Double>(Double.valueOf(lastToken()))); 
 				}
 				break;
 			default:
@@ -1066,7 +1066,7 @@ public class IsiLanguageParser extends Parser {
 				{
 				setState(191);
 				match(DECIMAL);
-				 loopCommand.setStep(new LiteralExpression<Float>(Float.valueOf(lastToken()))); 
+				 loopCommand.setStep(new LiteralExpression<Double>(Double.valueOf(lastToken()))); 
 				}
 				break;
 			default:
@@ -1369,7 +1369,7 @@ public class IsiLanguageParser extends Parser {
 				{
 				setState(244);
 				match(DECIMAL);
-				 expression = new LiteralExpression<Float>(Float.valueOf(lastToken())); 
+				 expression = new LiteralExpression<Double>(Double.valueOf(lastToken())); 
 				}
 				break;
 			case TEXTO:

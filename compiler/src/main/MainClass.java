@@ -18,7 +18,7 @@ public class MainClass {
 			System.out.println("Starting Expression Analysis");
 			CodeGenerator generator = new CodeGenerator(parser, LanguageType.JAVA);
 			CodeGenerator generator2 = new CodeGenerator(parser, LanguageType.C);
-			generator.generateFile("HelloWorld");
+			generator.generateFile("MainClass");
 			generator2.generateFile("main");
 			System.out.println("Compilation Successful! Good Job");
 			System.out.println("-----------------------------");			
