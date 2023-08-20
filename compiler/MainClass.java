@@ -10,7 +10,7 @@ public static void main(String[] args) {
 	a = keyboard.nextInt();
 	System.out.println("Digite B");
 	b = keyboard.nextInt();
-	if (a<b) {
+	if ((a<b) && (b>a)) {
 		c = a+b;
 
 	}
@@ -21,7 +21,6 @@ public static void main(String[] args) {
 	System.out.println("C e igual a ");
 	System.out.println(c);
 	d = c*a+b;
-	resposta = "D e igual a ";
 	System.out.println(resposta);
 	System.out.println(d);
 	for (int i = 0;i<10;i += 1) {
@@ -37,12 +36,12 @@ public static void main(String[] args) {
 
 	}
 	d = 0;
-	while (d<10) {
+	while ((d<10) || (d>=1)) {
 		d = d+1;
 		System.out.println(resposta);
 		System.out.println(d);
 	}
-	while (d<=100) {
+	while ((d<=100)) {
 		d = d+1;
 		System.out.println(resposta);
 		System.out.println(d);

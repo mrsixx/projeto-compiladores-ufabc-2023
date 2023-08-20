@@ -8,7 +8,7 @@ programa
 	leia (a).
 	escreva("Digite B").
 	leia (b).
-	se (a<b) entao {
+	se (a<b e b > a) entao {
 	 c := a + b.
 	}
 	senao {
@@ -17,7 +17,6 @@ programa
 	escreva("C e igual a ").
 	escreva (c).
 	d := c * a + b.
-	resposta := "D e igual a ".
 	escreva (resposta).
 	escreva (d).
 	
@@ -34,7 +33,7 @@ programa
 	}
 	
 	d := 0.
-	enquanto (d < 10) faca {
+	enquanto (d < 10 ou d >= 1) faca {
 		d := d + 1.
 		escreva(resposta).
 		escreva(d).
@@ -51,5 +50,4 @@ programa
 	paratodo z DECIMAL em [0..1;0.1) {
 		escreva(z).
 	}
-	
 fimprog.

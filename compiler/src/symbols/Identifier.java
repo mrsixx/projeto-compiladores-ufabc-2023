@@ -5,6 +5,8 @@ import java.util.HashMap;
 public class Identifier {
 	private DataType	type;
 	private String		name;
+	private boolean		used;
+	private boolean		assigned;
 	
 	public Identifier() { }
 	
@@ -29,6 +31,22 @@ public class Identifier {
 		this.name = name;
 	}
 	
+	public boolean isAssigned() {
+		return assigned;
+	}
+
+	public void setAssigned() {
+		this.assigned = true;
+	}
+
+	public boolean isUsed() {
+		return used;
+	}
+
+	public void setUsed() {
+		this.used = true;
+	}
+
 	@Override
 	public String toString() {
 		return "Identifier [name=" + name + ", type=" + type + "]";

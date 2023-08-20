@@ -7,6 +7,7 @@ public class ReadCommand extends Command {
 	
 	public ReadCommand(Identifier id) {
 		this.setId(id);
+		this.getId().setAssigned();
 	}
 
 	public Identifier getId() {

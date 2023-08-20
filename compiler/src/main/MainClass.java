@@ -12,15 +12,16 @@ public class MainClass {
 
 	public static void main(String[] args) {
 		try {
-			IsiLanguageLexer lexer = new IsiLanguageLexer(CharStreams.fromFileName("input.isi"));
+			String typeStr = args.length > 1 ? args[0] : "java";
+			String filename = args.length > 1 ? args[1] : "input.isi";
+			IsiLanguageLexer lexer = new IsiLanguageLexer(CharStreams.fromFileName(filename));
 			CommonTokenStream tokenStream = new CommonTokenStream(lexer);
 			IsiLanguageParser parser = new IsiLanguageParser(tokenStream);
 			System.out.println("Starting Expression Analysis");
-			CodeGenerator generator = new CodeGenerator(parser, LanguageType.JAVA);
-			CodeGenerator generator2 = new CodeGenerator(parser, LanguageType.C);
-			generator.generateFile("MainClass");
-			generator2.generateFile("main");
-			System.out.println("Compilation Successful! Good Job");
+			var type = (typeStr.toUpperCase() == "C") ? LanguageType.C : LanguageType.JAVA;
+			CodeGenerator generator = new CodeGenerator(parser, type);
+			generator.generateFile(type == LanguageType.JAVA ? "MainClass" : filename);
+			System.out.println("Compilation Done.");
 			System.out.println("-----------------------------");			
 		}
 		catch(Exception ex) {

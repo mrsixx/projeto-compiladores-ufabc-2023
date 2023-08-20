@@ -1,4 +1,5 @@
 package ast;
+import exceptions.IsiSemanticException;
 import symbols.*;
 
 public class AttributionCommand extends Command {
@@ -25,10 +26,19 @@ public class AttributionCommand extends Command {
 
 	public void setExpression(Expression expression) {
 		this.expression = expression;
+		this.getId().setAssigned();
 	}
-
+	private void validate() throws Exception {
+		var idType = this.getId().getType();
+		var expType = this.getExpression().resolveType(); 
+		if(idType != expType)
+			throw new IsiSemanticException("Cannot assign value of type "+expType+" into "+this.getId().getName()+" ("+idType+" variable)");
+		
+	}
+	
 	@Override
 	public String cCompile() throws Exception {
+		this.validate();
 		StringBuilder sb = new StringBuilder();
 		sb.append(getId().getName());
 		sb.append(" = ");
@@ -39,6 +49,7 @@ public class AttributionCommand extends Command {
 
 	@Override
 	public String javaCompile() throws Exception {
+		this.validate();
 		StringBuilder sb = new StringBuilder();
 		sb.append(getId().getName());
 		sb.append(" = ");

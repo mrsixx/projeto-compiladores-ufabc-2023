@@ -1,11 +1,19 @@
 package ast;
+
+import symbols.DataType;
+
 public class RelationalExpression extends Expression {
 	private Expression leftMember;
 	private Expression rightMember;
 	private String 	   operator;
+	private boolean 	negated;
 
 	public Expression getLeftMember() {
 		return leftMember;
+	}
+	
+	public void setNegation(boolean negated) {
+		this.negated = negated;
 	}
 	
 	public void setLeftMember(Expression leftMember) {
@@ -32,9 +40,13 @@ public class RelationalExpression extends Expression {
 	public String cCompile() {
 		StringBuilder sb = new StringBuilder();
 		try {
+			if(this.negated)
+				sb.append("!");
+			sb.append("(");
 			sb.append(this.getLeftMember().cCompile());
 			sb.append(this.getOperator());
 			sb.append(this.getRightMember().cCompile());
+			sb.append(")");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -44,9 +56,13 @@ public class RelationalExpression extends Expression {
 	public String javaCompile() throws Exception {
 		StringBuilder sb = new StringBuilder();
 		try {
+			if(this.negated)
+				sb.append("!");
+			sb.append("(");
 			sb.append(this.getLeftMember().javaCompile());
 			sb.append(this.getOperator());
-			sb.append(this.getRightMember().javaCompile());			
+			sb.append(this.getRightMember().javaCompile());
+			sb.append(")");		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -57,5 +73,10 @@ public class RelationalExpression extends Expression {
 	public String toString() {
 		return "RelationalExpression [leftMember=" + leftMember + ", rightMember=" + rightMember + ", operator="
 				+ operator + "]";
+	}
+
+	@Override
+	public DataType resolveType() throws Exception {
+		return DataType.LOGICO;
 	}
 }

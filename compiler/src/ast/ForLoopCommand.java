@@ -14,6 +14,7 @@ public class ForLoopCommand extends Command {
 	
 	public ForLoopCommand() {
 		this.setIteratorId(new Identifier());
+		this.getIteratorId().setAssigned();
 	}
 
 	public Identifier getIteratorId() {

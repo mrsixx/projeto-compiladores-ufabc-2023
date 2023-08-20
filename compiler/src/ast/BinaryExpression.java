@@ -1,5 +1,7 @@
 package ast;
 
+import symbols.DataType;
+
 public class BinaryExpression extends Expression {
 	private char operator;
 	private Expression leftOperand;
@@ -62,5 +64,21 @@ public class BinaryExpression extends Expression {
 			e.printStackTrace();
 		}
 		return sb.toString();
+	}
+
+	@Override
+	public DataType resolveType() throws Exception {
+		var leftType = this.getLeftOperand().resolveType();
+		var rightType = this.getRightOperand().resolveType();
+		if(leftType == rightType)
+			return leftType;
+		
+		if (leftType == DataType.TEXTO || rightType == DataType.TEXTO)
+			throw new Exception("Mismatched types on binary expression.");
+		
+		if(leftType == DataType.DECIMAL || rightType == DataType.DECIMAL)
+			return DataType.DECIMAL;
+		
+		return leftType;
 	}
 }

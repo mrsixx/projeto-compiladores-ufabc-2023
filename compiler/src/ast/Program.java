@@ -7,13 +7,14 @@ import java.util.Stack;
 import symbols.SymbolTable;
 
 public class Program {
-	private SymbolTable symbols;
+	private SymbolTable symbolTable;
 	private List<Command> commands;
 	private Stack<List<Command>> stack;
 
 	public Program() {
 		commands = new ArrayList<Command>();
 		stack = new Stack<List<Command>>();
+		setSymbolTable(new SymbolTable());
 		newLayer();
 	}
 
@@ -25,12 +26,12 @@ public class Program {
 		this.commands.add(command);
 	}
 
-	public SymbolTable getSymbols() {
-		return symbols;
+	public SymbolTable getSymbolTable() {
+		return symbolTable;
 	}
 
-	public void setSymbols(SymbolTable symbols) {
-		this.symbols = symbols;
+	public void setSymbolTable(SymbolTable symbols) {
+		this.symbolTable = symbols;
 	}
 
 	public void newLayer() {
@@ -47,5 +48,15 @@ public class Program {
 	
 	public void cleanStack() {
 		this.commands.addAll(this.stack.pop());
+	}
+	
+	public void checkIds( ) {
+		this.getSymbolTable().getSymbols().values().stream().forEach((id)-> {
+			if(id.isUsed() && !id.isAssigned())
+				System.out.println("WARNING: The variable "+ id.getName() +" may not have been initialized.");
+			if(!id.isUsed())
+				System.out.println("WARNING: The value of the variable "+id.getName()+" is not used");
+		}
+	);
 	}
 }

@@ -8,7 +8,7 @@ int main(){
 	scanf("%d", &a);
 	printf("Digite B");
 	scanf("%d", &b);
-	if (a<b) {
+	if ((a<b) && (b>a)) {
 		c = a+b;
 
 	}
@@ -19,7 +19,6 @@ int main(){
 	printf("C e igual a ");
 	printf("%d\n", c);
 	d = c*a+b;
-	resposta = "D e igual a ";
 	printf("%s\n", resposta);
 	printf("%d\n", d);
 	for (int i = 0;i<10;i += 1) {
@@ -35,12 +34,12 @@ int main(){
 
 	}
 	d = 0;
-	while (d<10) {
+	while ((d<10) || (d>=1)) {
 		d = d+1;
 		printf("%s\n", resposta);
 		printf("%d\n", d);
 	}
-	while (d<=100) {
+	while ((d<=100)) {
 		d = d+1;
 		printf("%s\n", resposta);
 		printf("%d\n", d);

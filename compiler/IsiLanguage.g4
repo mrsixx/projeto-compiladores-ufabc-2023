@@ -14,7 +14,7 @@ grammar IsiLanguage;
 	private Program  program = new Program();
 	private Expression expression;
 	private BinaryExpression binaryExpression;
-	private SymbolTable symbolTable = new SymbolTable();
+	private BinaryRelationalExpression binaryRelExpression;
 	private List<Command> curThread;
 	private List<Command> listaTrue;
 	private List<Command> listaFalse;
@@ -22,17 +22,12 @@ grammar IsiLanguage;
 	private List<Integer> _tipoVar = new ArrayList<Integer>();
 	private RelationalExpression _relationalExpression;
 	private DeclarationCommand _declCmd;
-
-	public void setup() {
-		program.setSymbols(symbolTable);
-	}
-
 	public Program getAST() { 
 		return this.program;
 	} 
 
 	public void showIdentifiers() {
-		symbolTable.getSymbols().values().stream().forEach((id)->System.out.println(id));
+		program.getSymbolTable().getSymbols().values().stream().forEach((id)->System.out.println(id));
 	}
 	
 	public void showCommands() {
@@ -45,25 +40,26 @@ grammar IsiLanguage;
 
 	private Identifier getIdIfDeclared() { 
 			String id = lastToken();
-			if (!symbolTable.exists(id)){
+			if (!program.getSymbolTable().exists(id)){
 				throw new IsiSemanticException("Semantic ERROR - Undeclared Identifier: " + id);
 			}
-			return symbolTable.get(id);
+			return program.getSymbolTable().get(id);
   }
 
   public void verificaID(String id){
-		if (!symbolTable.exists(id))
+		if (!program.getSymbolTable().exists(id))
 			throw new IsiSemanticException("Symbol "+id+" not declared");
 	}
 	
 	public void mapIdentifier(String name, DataType type) {
 		Identifier id = new Identifier(name, type);
-		symbolTable.add(id);
+		program.getSymbolTable().add(id);
 		_declCmd.getIds().add(id);
 	}
 }
 prog  	: 'programa' declaracoes bloco 'fimprog' EOL {
 	program.cleanStack();
+	program.checkIds();
 };
 
 declaracoes : declara*;
@@ -92,7 +88,7 @@ cmdLine : (cmdLeitura | cmdEscrita | cmdExpr)EOL;
 cmdLeitura	: 'leia' AP
 										ID {
 											Identifier id = getIdIfDeclared();
-											// id.setAssigned(true);
+											id.setAssigned();
 											program.putCommandOnStack(new ReadCommand(id));
 										}
 										FP;
@@ -118,7 +114,8 @@ cmdEscrita	: 'escreva' AP (
 cmdExpr			: ID {String idAtribuido = lastToken();}
 							ATTR
 							expr {
-								Identifier id = symbolTable.get(idAtribuido);
+								Identifier id = program.getSymbolTable().get(idAtribuido);
+								id.setAssigned();
 								program.putCommandOnStack(new AttributionCommand(id, expression));
 								expression = null;		
 							};
@@ -155,7 +152,7 @@ paratodo		: 'paratodo' {
 									'INTEIRO'  { loopCommand.getIteratorId().setType(DataType.INTEIRO); }
 								|	'DECIMAL'  { loopCommand.getIteratorId().setType(DataType.DECIMAL); }
 								)
-								'em' { symbolTable.add(loopCommand.getIteratorId()); }
+								'em' { program.getSymbolTable().add(loopCommand.getIteratorId()); }
 								ACO
 									// limitante Inferior do intervalo de iteração
 									(ID { loopCommand.setLowerBound(new IdentifierExpression(getIdIfDeclared())); }
@@ -196,7 +193,20 @@ enquanto		: 'enquanto' { WhileLoopCommand whileCmd = new WhileLoopCommand(); }
 								program.putCommandOnStack(whileCmd);
 							};
 
-exprRel			: expr {
+
+
+exprRel				: termoRel exprRell*;
+
+exprRell			: OPLOG { 
+								binaryRelExpression = new BinaryRelationalExpression(lastToken());
+								binaryRelExpression.setLeftOperand(_relationalExpression);
+								}
+							termoRel {
+								binaryRelExpression.setRightOperand(_relationalExpression);
+								_relationalExpression = binaryRelExpression;
+							};
+
+termoRel			: expr {
 								_relationalExpression = new RelationalExpression();
 								_relationalExpression.setLeftMember(expression);
 							}
@@ -233,7 +243,9 @@ ATTR	  	: ':=';
 OP				: '+' | '-' | '*' | '/';
           
 OPREL     : '<' | '>' | '<=' | '>=' | '!=' | '==';          
-   		  
+
+OPLOG			: 'e' | 'ou';
+
 ID			  : ([a-z]|[A-Z])([a-z]|[A-Z]|[0-9])*;
           
 COMMA      : ',';

@@ -1,5 +1,6 @@
 package ast;
 
+import symbols.DataType;
 import symbols.Identifier;
 
 public class IdentifierExpression extends Expression {
@@ -7,6 +8,7 @@ public class IdentifierExpression extends Expression {
 	
 	public IdentifierExpression(Identifier id) {
 		this.setId(id);
+		this.getId().setUsed();
 	}
 
 	public Identifier getId() {
@@ -30,6 +32,11 @@ public class IdentifierExpression extends Expression {
 	@Override
 	public String javaCompile() throws Exception {
 		return this.getId().getName();
+	}
+
+	@Override
+	public DataType resolveType() throws Exception {
+		return this.getId().getType();
 	}
 	
 }

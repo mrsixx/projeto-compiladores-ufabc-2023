@@ -176,6 +176,26 @@ public interface IsiLanguageListener extends ParseTreeListener {
 	 */
 	void exitExprRel(IsiLanguageParser.ExprRelContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link IsiLanguageParser#exprRell}.
+	 * @param ctx the parse tree
+	 */
+	void enterExprRell(IsiLanguageParser.ExprRellContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link IsiLanguageParser#exprRell}.
+	 * @param ctx the parse tree
+	 */
+	void exitExprRell(IsiLanguageParser.ExprRellContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link IsiLanguageParser#termoRel}.
+	 * @param ctx the parse tree
+	 */
+	void enterTermoRel(IsiLanguageParser.TermoRelContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link IsiLanguageParser#termoRel}.
+	 * @param ctx the parse tree
+	 */
+	void exitTermoRel(IsiLanguageParser.TermoRelContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link IsiLanguageParser#expr}.
 	 * @param ctx the parse tree
 	 */

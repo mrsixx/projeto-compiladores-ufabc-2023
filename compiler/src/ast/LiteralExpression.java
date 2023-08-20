@@ -1,5 +1,7 @@
 package ast;
 
+import symbols.DataType;
+
 public class LiteralExpression<T> extends Expression {
 	private T value;
 	
@@ -40,6 +42,16 @@ public class LiteralExpression<T> extends Expression {
 	@Override
 	public String javaCompile() throws Exception {
 		return String.valueOf(getValue());
+	}
+
+	@Override
+	public DataType resolveType() throws Exception {
+		if(isText()) return DataType.TEXTO;
+		if(isInteger()) return DataType.INTEIRO;
+		if(isDecimal()) return DataType.DECIMAL;
+		
+		throw new Exception("Unknown data type");
+		
 	}
 	
 }
