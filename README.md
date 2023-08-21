@@ -4,7 +4,7 @@ A **IsiLanguage** é uma linguagem de programação simples que permite a criaç
 
 [![Veja o vídeo de demonstração](https://img.youtube.com/vi/Bksj054FIes/maxresdefault.jpg)](https://youtu.be/Bksj054FIes)
 
-Uma IDE foi desenvolvida para a linguagem e pode ser encontrada [aqui](https://github.com/mrsixx/projeto-compiladores-ufabc-2023/tree/main/ide)
+Uma IDE foi desenvolvida para a linguagem e pode ser encontrada [aqui](https://github.com/mrsixx/projeto-compiladores-ufabc-2023/tree/master/ide)
 
 ## Estrutura do Programa
 
