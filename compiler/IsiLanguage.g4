@@ -135,15 +135,14 @@ cmdIf				:  'se' { DecisionCommand cmdIf = new DecisionCommand(); }
 									FC
 									{
 										cmdIf.getFalseCommands().addAll(program.popStackCommands());
-										program.putCommandOnStack(cmdIf);
 									})?
+									{program.putCommandOnStack(cmdIf);}
             ;
 
 cmdLoop			: paratodo | enquanto;
 
 paratodo		: 'paratodo' {
 									// adiciona nova camada na pilha e cria o comando de loop
-									program.newLayer();
 									ForLoopCommand loopCommand = new ForLoopCommand();
 								}
 								// nome e tipo da variavel iteradora
@@ -175,7 +174,9 @@ paratodo		: 'paratodo' {
 								(FP   { loopCommand.setOpenInterval(true); }
 								|FCO  { loopCommand.setOpenInterval(false); }
 								)
-								escopo {
+								AC { program.newLayer(); }
+									(cmd)+
+								FC {
 									loopCommand.setScope(program.popStackCommands());
 									program.putCommandOnStack(loopCommand);
 								};

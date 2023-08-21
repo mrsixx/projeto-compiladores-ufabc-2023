@@ -22,4 +22,11 @@ programa
 	escreva("FALTAS: ").
 	escreva(faltas).
 	
+	paratodo z DECIMAL em [0..1;0.1) {
+		se (z == 0.1) entao{
+		
+			escreva(z).
+		}
+	}
+	
 fimprog.

@@ -23,6 +23,13 @@ public static void main(String[] args) {
 	System.out.println(media);
 	System.out.println("FALTAS: ");
 	System.out.println(faltas);
+	for (double z = 0;z<1;z += 0.1) {
+		if ((z==0.1)) {
+		System.out.println(z);
+
+	}
+
+	}
 }
 }
 
