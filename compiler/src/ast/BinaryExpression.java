@@ -44,9 +44,13 @@ public class BinaryExpression extends Expression {
 	public String cCompile() {
 		StringBuilder sb = new StringBuilder();
 		try {
+			sb.append("(");
 			sb.append(this.getLeftOperand().cCompile());
+			sb.append(")");
 			sb.append(this.getOperator());
+			sb.append("(");
 			sb.append(this.getRightOperand().cCompile());
+			sb.append(")");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -57,9 +61,13 @@ public class BinaryExpression extends Expression {
 	public String javaCompile() {
 		StringBuilder sb = new StringBuilder();
 		try {
+			sb.append("(");
 			sb.append(this.getLeftOperand().javaCompile());
+			sb.append(")");
 			sb.append(this.getOperator());
+			sb.append("(");
 			sb.append(this.getRightOperand().javaCompile());
+			sb.append(")");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

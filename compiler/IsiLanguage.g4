@@ -232,7 +232,7 @@ termo				: ID { expression = new IdentifierExpression(getIdIfDeclared()); }
 
 num	  		: INT | DECIMAL;
 
-TEXTO 	  	: DITTO ([a-z]|[A-Z]|[0-9]|'\t' | BLANK)* DITTO;
+TEXTO 	  	: '"' (~["])+ '"';
 
 INT				: ('-')?[0-9]+;
 

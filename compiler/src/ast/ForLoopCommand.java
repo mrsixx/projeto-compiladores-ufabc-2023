@@ -110,7 +110,7 @@ public class ForLoopCommand extends Command {
         str.append(" += ");
         str.append(this.getStep().javaCompile());
         str.append(") {\n");
-		for (Command cmd: this.getScope()) {
+		for (Command cmd : this.getScope()) {
 			str.append("\t\t");
 			str.append(cmd.javaCompile());
 			str.append("\n");

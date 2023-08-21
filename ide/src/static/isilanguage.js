@@ -7,7 +7,7 @@ CodeMirror.defineSimpleMode("isilanguage", {
   start: [
     { regex: /"(?:[^\\]|\\.)*?(?:"|$)/, token: "string" },
     { regex: /[0-9]+/, token: "number" },
-    { regex: /declare|como|leia|escreva|senao|se|entao|paratodo|em|enquanto/, token: "keyword" },
+    { regex: /declare|como|leia|escreva|senao|se|entao|paratodo|em|enquanto|e|ou/, token: "keyword" },
     { regex: /programa/, token: "keyword", indent: true },
     { regex: /fimprog/, token: "keyword", dedent: true },
     { regex: /INTEIRO|TEXTO|DECIMAL/, token: "atom" },

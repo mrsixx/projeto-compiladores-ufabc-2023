@@ -25,8 +25,19 @@ import { ref } from "vue";
 export default {
   name: 'FileEditor',
   components: { VueCodemirror },
+  props: {
+    file: {
+      type: Object,
+    }
+  },
+  watch: {
+    file(obj) {
+        this.code = obj.content;
+        console.log(obj);
+      },
+  },
   setup() {
-    const code = ref(`programa\n\tdeclare greeting como TEXTO.\n\tgreeting := "Olá Mundo".\n\tescreva(greeting).\nfimprog.`);
+    const code = ref(null);
 
     return {
       code,
@@ -38,5 +49,6 @@ export default {
       },
     };
   },
+  
 };
 </script>

@@ -1,53 +1,25 @@
 programa
-	declare a,b,c,d  como INTEIRO.
-	declare dec  	 como DECIMAL.
-	declare resposta como TEXTO.
+    declare name como TEXTO.
+	declare faltas como INTEIRO.
+	declare n1,n2,n3,n4,media como DECIMAL.
+	escreva("INSIRA OS DADOS DOS ALUNOS \n\n").
+	escreva("nome do aluno: ").
+	leia (name).
+	escreva("digite a N1: ").
+	leia (n1).
+	escreva("digite a N2: ").
+	leia (n2).
+	escreva("digite a N3: ").
+	leia (n3).
+	escreva("digite a N4: ").
+	leia (n4).
+	escreva("quantas faltas o aluno tem? ").
+	leia(faltas).
 	
-	escreva("Programa Teste").
-	escreva("Digite A").
-	leia (a).
-	escreva("Digite B").
-	leia (b).
-	se (a<b e b > a) entao {
-	 c := a + b.
-	}
-	senao {
-	 c := a - b.
-	}
-	escreva("C e igual a ").
-	escreva (c).
-	d := c * a + b.
-	escreva (resposta).
-	escreva (d).
+	media := (n1 + n2 + n3 + n4) / 4.
+	escreva("MEDIA: ").
+	escreva(media).
+	escreva("FALTAS: ").
+	escreva(faltas).
 	
-	paratodo i INTEIRO em [0..10;1) {
-		escreva(i).
-	}
-	
-	paratodo j INTEIRO em [0..10;2] {
-		escreva(j).
-	}
-	
-	paratodo k INTEIRO em [10..0;-1] {
-		escreva(k).
-	}
-	
-	d := 0.
-	enquanto (d < 10 ou d >= 1) faca {
-		d := d + 1.
-		escreva(resposta).
-		escreva(d).
-	}
-	
-	enquanto (d <= 100) faca {
-		d := d + 1.
-		escreva(resposta).
-		escreva(d).
-	}
-	dec := 3.14.
-	escreva(3.14).
-	
-	paratodo z DECIMAL em [0..1;0.1) {
-		escreva(z).
-	}
 fimprog.
